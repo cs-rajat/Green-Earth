@@ -117,9 +117,18 @@
     <section class="bg-green-50">
       <h1 class="text-center text-[32px] font-semibold text-center pt-10 pb-6">Choose Your Trees</h1>
       <div class="max-w-11/12 mx-auto grid grid-cols-6 gap-5">
-        <div class="col-span-1 border">Categories</div>
-        <div class="col-span-4 border">Card</div>
-        <div class="col-span-1 border">Your card</div>
+        <!-- categories container  -->
+        <div  class="col-span-1 ">
+          <h1 class="text-[20px] font-semibold">Categories</h1>
+          <ul id="categoryContainer" class="mt-3 space-y-4 ">
+              <!-- <li class="hover:bg-[rgba(21,128,61,1)] hover:text-white hover:p-2 hover:rounded-md">rahul</li> -->
+          </ul>
+        </div>
+         <!-- card container -->
+        <div id="cardContainer" class="col-span-4 border">
+
+        </div>
+        <div id="addToCard" class="col-span-1 border">Your card</div>
       </div>
     </section>
 
@@ -217,6 +226,6 @@
      </div>
     </footer>    
 
-
+<script src="./index.js"></script>
   </body>
 </html>
