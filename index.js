@@ -11,35 +11,25 @@ fetch('https://openapi.programming-hero.com/api/categories')
 }
 const showCategory =(categories)=>{
     // console.log(categories)
-    categories.forEach(category => {
+    categories.forEach(cat => {
         categoryContainer.innerHTML+=`
-          <li id="${category.id}" class="hover:bg-[rgba(21,128,61,1)] hover:text-white hover:p-2 hover:rounded-md">${category.category_name}</li>
+          <li id="${cat.id}" class="hover:bg-[rgba(21,128,61,1)] hover:text-white p-2 rounded-md cursor-pointer">${cat.category_name}</li>
         `
     });
-}
-categoryContainer.addEventListener('click', (e)=>{
-    console.log(e.target)
-    const allLi = document.querySelectorAll('li')
-    allLi.forEach(li=>{
-       li.classList.remove(
-        "hover:bg-[rgba(21,128,61,1)]",
-        "hover:text-white",
-        "hover:p-2",
-        "hover:rounded-md"
-    
-        );
-    });
-  if(e.target.localName === 'li'){
-    console.log(e.target.id);
+  categoryContainer.addEventListener('click', (e)=>{
+     
+    const allLI= document.querySelectorAll('li')
+    // console.log(allLI)
+    allLI.forEach(li=>{
+      li.classList.remove("bg-[rgba(21,128,61,1)]", "text-white")
+    })
 
-    e.target.classList.add(
-        "bg-[rgba(21,128,61,1)]",
-        "text-white",
-        "p-2",
-        "rounded-md"
-    );
-}
-   
-})
+     if(e.target.localName==='li'){
+      console.log(e.target)
+      e.target.classList.add("bg-[rgba(21,128,61,1)]", "text-white")
+     }
+  })
+
+};
 
 loadCategory();
