@@ -1,8 +1,9 @@
-const categoryContainer = document.getElementById("categoryContainer");
-const cardContainer = document.getElementById("cardContainer");
-const addToCard = document.getElementById("addToCard");
-let cardCon = [];
+const categoryContainer = document.getElementById('categoryContainer')
+const cardContainer = document.getElementById('cardContainer')
+const addToCard = document.getElementById('addToCard')
+let cardCon = []
 
+// loader div (add this in HTML body also)
 const loader = document.createElement("div");
 loader.innerHTML = `
   <div class="flex justify-center items-center w-full h-40">
@@ -20,68 +21,68 @@ const hideLoader = (container) => {
 
 const loadCategory = () => {
   showLoader(categoryContainer);
-  fetch("https://openapi.programming-hero.com/api/categories")
-    .then((res) => res.json())
-    .then((data) => {
+  fetch('https://openapi.programming-hero.com/api/categories')
+    .then(res => res.json())
+    .then(data => {
       categoryContainer.innerHTML = "";
-      showCategory(data.categories);
+      showCategory(data.categories)
     })
     .catch((err) => {
       console.log(err);
       categoryContainer.innerHTML = `<p class="text-red-500">Failed to load categories.</p>`;
     });
-};
+}
 
 const showCategory = (categories) => {
-  categories.forEach((cat) => {
+  categories.forEach(cat => {
     categoryContainer.innerHTML += `
       <li id="${cat.id}" class="hover:bg-[rgba(21,128,61,1)] hover:text-white p-2 rounded-md cursor-pointer">${cat.category_name}</li>
-    `;
+    `
   });
-  categoryContainer.addEventListener("click", (e) => {
-    const allLI = document.querySelectorAll("li");
-    allLI.forEach((li) => {
-      li.classList.remove("bg-[rgba(21,128,61,1)]", "text-white");
-    });
+  categoryContainer.addEventListener('click', (e) => {
+    const allLI = document.querySelectorAll('li')
+    allLI.forEach(li => {
+      li.classList.remove("bg-[rgba(21,128,61,1)]", "text-white")
+    })
 
-    if (e.target.localName === "li") {
-      e.target.classList.add("bg-[rgba(21,128,61,1)]", "text-white");
-      loadPlantsByCategory(e.target.id);
+    if (e.target.localName === 'li') {
+      e.target.classList.add("bg-[rgba(21,128,61,1)]", "text-white")
+      loadPlantsByCategory(e.target.id)
     }
-  });
+  })
 };
 
 const loadPlantsByCategory = (id) => {
   showLoader(cardContainer);
   fetch(`https://openapi.programming-hero.com/api/category/${id}`)
-    .then((res) => res.json())
-    .then((data) => {
+    .then(res => res.json())
+    .then(data => {
       hideLoader(cardContainer);
-      showPlantsByCategory(data.plants);
+      showPlantsByCategory(data.plants)
     })
     .catch((err) => {
       console.log(err);
       cardContainer.innerHTML = `<p class="text-red-500">Failed to load plants.</p>`;
     });
-};
+}
 
 const loadAllPlants = () => {
   showLoader(cardContainer);
   fetch(`https://openapi.programming-hero.com/api/plants`)
-    .then((res) => res.json())
-    .then((data) => {
+    .then(res => res.json())
+    .then(data => {
       hideLoader(cardContainer);
-      showPlantsByCategory(data.plants);
+      showPlantsByCategory(data.plants)
     })
     .catch((err) => {
       console.log(err);
       cardContainer.innerHTML = `<p class="text-red-500">Failed to load plants.</p>`;
     });
-};
+}
 
 const showPlantsByCategory = (plants) => {
-  cardContainer.innerHTML = "";
-  plants.forEach((plant) => {
+  cardContainer.innerHTML = ""
+  plants.forEach(plant => {
     cardContainer.innerHTML += `
       <div class="bg-white rounded-2xl shadow-lg p-3 hover:shadow-2xl flex flex-col">
         <div class="w-full h-48 overflow-hidden rounded-xl">
@@ -107,24 +108,24 @@ const showPlantsByCategory = (plants) => {
           Add to Cart
         </button>
       </div>
-    `;
-  });
+    `
+  })
 };
 
-cardContainer.addEventListener("click", (e) => {
-  if (e.target.innerText === "Add to Cart") {
-    handleCardCon(e);
+cardContainer.addEventListener('click', (e) => {
+  if (e.target.innerText === 'Add to Cart') {
+    handleCardCon(e)
   }
 });
 
 const handleCardCon = (e) => {
   const card = e.target.parentNode;
-  const title = card.querySelector("h1").innerText;
-  const idDiv = card.querySelector("div[id]");
-  const id = idDiv.id;
-  const price = parseFloat(card.querySelector("#price").innerText);
+  const title = card.querySelector('h1').innerText;
+  const idDiv = card.querySelector('div[id]');
+  const id = idDiv.id
+  const price = parseFloat(card.querySelector('#price').innerText);
 
-  let exist = cardCon.find((item) => item.id === id);
+  let exist = cardCon.find(item => item.id === id);
   if (exist) {
     exist.quantity += 1;
   } else {
@@ -132,17 +133,17 @@ const handleCardCon = (e) => {
       title: title,
       price: price,
       id: id,
-      quantity: 1,
-    });
+      quantity: 1
+    })
   }
-  showCardCon(cardCon);
+  showCardCon(cardCon)
 };
 
 const showCardCon = (cards) => {
-  addToCard.innerHTML = "";
+  addToCard.innerHTML = ""
   let total = 0;
 
-  cards.forEach((card) => {
+  cards.forEach(card => {
     total += card.price * card.quantity;
 
     addToCard.innerHTML += `
@@ -156,8 +157,8 @@ const showCardCon = (cards) => {
         </div>
         <p onclick="handleDeleteCard('${card.id}')" class="text-gray-500 cursor-pointer">X</p>
       </div>
-    `;
-  });
+    `
+  })
 
   addToCard.innerHTML += `
     <div class="flex justify-between items-center border-t mt-3 pt-2">
@@ -166,22 +167,22 @@ const showCardCon = (cards) => {
         <i class="fa-solid fa-bangladeshi-taka-sign text-xs"></i>${total}
       </p>
     </div>
-  `;
+  `
 };
 
 const handleDeleteCard = (cardId) => {
-  let item = cardCon.find((card) => card.id === cardId);
+  let item = cardCon.find(card => card.id === cardId);
 
   if (item) {
     if (item.quantity > 1) {
       item.quantity -= 1;
     } else {
-      cardCon = cardCon.filter((card) => card.id !== cardId);
+      cardCon = cardCon.filter(card => card.id !== cardId);
     }
   }
 
-  showCardCon(cardCon);
-};
+  showCardCon(cardCon)
+}
 
 loadCategory();
 loadAllPlants();
