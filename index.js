@@ -80,6 +80,7 @@ const loadAllPlants = () => {
 };
 
 const showPlantsByCategory = (plants) => {
+  console.log(plants)
   cardContainer.innerHTML = "";
   plants.forEach((plant) => {
     cardContainer.innerHTML += `
@@ -90,7 +91,7 @@ const showPlantsByCategory = (plants) => {
         </div>
         <div class="flex flex-col flex-grow justify-between mt-3">
           <div id="${plant.id}">
-            <h1 class="text-xl font-semibold text-gray-800">${plant.name}</h1>
+            <h1 onclick="handleViewDetails('${plant.id}')" class="text-xl font-semibold text-gray-800">${plant.name}</h1>
             <p class="text-gray-600 text-sm mt-1 min-h-[60px]">
               ${plant.description}
             </p>
@@ -182,6 +183,40 @@ const handleDeleteCard = (cardId) => {
 
   showCardCon(cardCon);
 };
+
+const handleViewDetails = (id) => {
+  fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const plant = data.plants;
+      if (!plant) return console.log("No plant data found!");
+      showModal(plant);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+
+const showModal = (plant) => {
+  const modalContent = document.getElementById("modalContent");
+
+  modalContent.innerHTML = `
+    <div class="space-y-3">
+      <h2 class="text-xl font-bold text-gray-800">${plant.name}</h2>
+      <img src="${plant.image}" alt="${plant.name}" class="w-full h-70 object-cover rounded-lg"/>   
+      <p class="text-green-600 font-medium">Category: ${plant.category}</p>
+      <p class="text-lg font-semibold text-green-500 flex items-center gap-1">Price:
+        <i class="fa-solid fa-bangladeshi-taka-sign text-xs"></i>${plant.price}
+      </p>   
+      <p class="text-gray-600"><span class="font-bold text-black">Description:</span>${plant.description}</p>         
+    </div>
+  `;
+  document.getElementById("my_modal_1").checked = true;
+};
+  
+  
+
 
 loadCategory();
 loadAllPlants();
